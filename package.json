@@ -18,17 +18,21 @@
     "dist"
   ],
   "scripts": {
+    "build": "npm run build:esm && npm run build:cjs && npm run build:echo",
     "build:cjs": "tsc -p ./tsconfig-cjs.json",
     "build:echo": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
-    "build:esm": "tsc  --watch -p ./tsconfig.json",
+    "build:esm": "tsc -p ./tsconfig.json",
     "test": "vitest",
     "prepublishOnly": "npm run build "
   },
   "dependencies": {
-    "axios": "^1.10.0",
+    "axios": "^1.10.0"
+  },
+  "peerDependencies": {
     "zod": "^3.25.67"
   },
   "devDependencies": {
+    "zod": "^3.25.67",
     "@types/node": "^24.0.7",
     "dotenv": "^17.0.0",
     "typescript": "^4.9.5"

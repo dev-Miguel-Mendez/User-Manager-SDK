@@ -1,27 +1,79 @@
-import axios, { AxiosInstance } from "axios"
-import { SignupRequestBody } from "../types-and-schemas/types/request-types.js"
-import { SignupResponse } from "../types-and-schemas/types/response-types.js"
+import axios, { AxiosError, AxiosInstance } from "axios"
+import type { LoginRequestBody, SignupRequestBody } from "../types-and-schemas/types/request-types.js"
+import type { AuthenticateResponse, LoginResponse, SignupResponse } from "../types-and-schemas/types/response-types.js"
 
 export class HttpProvider {
 
-    private axios: AxiosInstance
+    private axiosInstance: AxiosInstance
 
-    constructor(private readonly host: string, private readonly port: number, private readonly sdkKey: string){
-        this.axios = axios.create({
+
+
+    constructor(host: string, port: number, sdkKey: string){
+        
+        sdkKey //! Just removing typescript unused-warning
+
+        this.axiosInstance = axios.create({
             baseURL: host + ":" + port
 
         })
     }
 
-    async signup(email: string, username: string, password: string){
-
-        const requestBody: SignupRequestBody = {email, username, password}
-
-        return await this.axios.post<SignupResponse>('/api/signup', requestBody)
+    async signup(signupRequestBody: SignupRequestBody){
+        try{
+            const response =  await this.axiosInstance.post<SignupResponse>('/api/signup', signupRequestBody)
+            const data: SignupResponse['data'] = response.data.data
+            return data
+            
+        }catch(e){
+            this.handleRequestError(e)	
+        }
     }
 
-    getAllUsers(){
+
+
+
+    async login(loginRequestBody: LoginRequestBody){
+        try{      
+            const response = await this.axiosInstance.post<LoginResponse>('/api/login', loginRequestBody) 
+            const data: LoginResponse['data'] = response.data.data
+            return data
+        }catch(e){
+            this.handleRequestError(e)	
+        }
+    }  
+
+
+    async authenticate(token: string){
+        try{
+            const response = await this.axiosInstance.post<AuthenticateResponse>('/api/authenticate', {token})
+            const data = response.data.data
+            return data
+        }catch(e){
+            this.handleRequestError(e)
+        }
 
     }
 
+
+    private handleRequestError (e: unknown){
+
+
+        if(e instanceof AxiosError){
+            const status = e.response?.status || 500
+            const message = e.response?.data || 'Http Provider failed'
+            
+            if(status === 500){ //* Handle server errors 
+                console.error('HttpProvider detected an internal server error')
+            } else {
+                console.error('Error in http request')
+            }
+            console.error({message})
+
+        }else {
+            console.log(e)
+            throw new Error('Error from HttProvider:    ' + e)
+        }
+    }   
 }
+
+

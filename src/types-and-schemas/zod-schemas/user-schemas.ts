@@ -18,7 +18,7 @@ export const loginSchema = z.object({
 
 export const authenticateSchema = z.object({
     body: z.object({
-        cookie: z.string().nonempty('Cookie is required')
+        token: z.string().nonempty('Toeken is required')
     })
 })
 

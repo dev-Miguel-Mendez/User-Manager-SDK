@@ -1,10 +1,11 @@
 import { User } from "../domains/user.js";
+import { LoginRequestBody, SignupRequestBody } from "../types-and-schemas/types/request-types.js";
 
 export interface IUserService {
-    register(email: string, username: string, password: string): Promise<User>
+    register({email, username, password}: SignupRequestBody): Promise<User | undefined>
 
-    
-    login(email: string, password: string): Promise<{token: string}>
+
+    login({email, password}: LoginRequestBody): Promise<{token: string} | undefined>
 
     verifyToken(token: string) : any //¡ CHANGE THIS ANY 
 }
