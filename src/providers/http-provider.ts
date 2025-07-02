@@ -8,10 +8,7 @@ export class HttpProvider {
 
 
 
-    constructor(host: string, port: number, sdkKey: string){
-        
-        sdkKey //! Just removing typescript unused-warning
-
+    constructor(host: string, port: number){
         this.axiosInstance = axios.create({
             baseURL: host + ":" + port
 
