@@ -66,6 +66,8 @@ export class HttpProvider {
                 console.error('HttpProvider detected an internal server error')
             } else {
                 console.error('Error in http request')
+                if(!status) console.log('No status code provided, is the server running?');
+                
             }
             console.error({message})
 
