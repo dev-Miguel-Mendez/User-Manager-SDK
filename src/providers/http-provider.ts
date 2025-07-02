@@ -59,7 +59,7 @@ export class HttpProvider {
 
 
         if(e instanceof AxiosError){
-            const status = e.response?.status || 500
+            const status = e.response?.status
             const message = e.response?.data || 'Http Provider failed'
             
             if(status === 500){ //* Handle server errors 
