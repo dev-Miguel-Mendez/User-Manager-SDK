@@ -6,8 +6,6 @@ export class HttpProvider {
 
     private axiosInstance: AxiosInstance
 
-
-
     constructor(host: string, port: number){
         this.axiosInstance = axios.create({
             baseURL: host + ":" + port
